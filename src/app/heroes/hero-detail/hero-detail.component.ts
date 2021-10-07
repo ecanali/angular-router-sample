@@ -1,9 +1,10 @@
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { Hero } from '../hero';
 
 @Component({
   selector: 'app-hero-detail',
@@ -11,31 +12,26 @@ import { HeroService } from '../hero.service';
   styleUrls: ['./hero-detail.component.css']
 })
 export class HeroDetailComponent implements OnInit {
-  hero: Hero | undefined;
+  hero$!: Observable<Hero>;
 
   constructor(
     private route: ActivatedRoute,
-    private heroService: HeroService,
-    private location: Location
-  ) { }
+    private router: Router,
+    private service: HeroService
+  ) {}
 
-  ngOnInit(): void {
-    this.getHero();
+  ngOnInit() {
+    this.hero$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this.service.getHero(params.get('id')!))
+    );
   }
 
-  getHero(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.heroService.getHero(id).subscribe(hero => this.hero = hero);
-  }
-
-  save(): void {
-    if (this.hero) {
-      this.heroService.updateHero(this.hero)
-        .subscribe(() => this.goBack());
-    }
-  }
-
-  goBack(): void {
-    this.location.back();
+  gotoHeroes(hero: Hero) {
+    const heroId = hero ? hero.id : null;
+    // Pass along the hero id if available
+    // so that the HeroList component can select that hero.
+    // Include a junk 'foo' property for fun.
+    this.router.navigate(['/heroes', { id: heroId, foo: 'foo' }]);
   }
 }
