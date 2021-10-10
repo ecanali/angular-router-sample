@@ -22,4 +22,4 @@ import { CrisisCenterHomeComponent } from './crisis-center-home/crisis-center-ho
     CrisisCenterHomeComponent
   ]
 })
-export class CrisesModule {}
+export class CrisisCenterModule {}
