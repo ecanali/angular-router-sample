@@ -12,6 +12,7 @@ import { CrisisListComponent } from './crisis-list/crisis-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ComposeMessageComponent } from './compose-message/compose-message.component';
 import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   imports: [
@@ -21,13 +22,13 @@ import { AdminModule } from './admin/admin.module';
     HeroesModule,
     CrisisCenterModule,
     AdminModule,
+    AuthModule,
     AppRoutingModule
   ],
   declarations: [
     AppComponent,
-    CrisisListComponent,
-    PageNotFoundComponent,
-    ComposeMessageComponent
+    ComposeMessageComponent,
+    PageNotFoundComponent
   ],
   bootstrap: [ AppComponent ]
 })
